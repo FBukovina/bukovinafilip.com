@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filip Bukovina — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <header class="site-header">
+      <nav class="nav container">
+        <a href="#" class="nav__logo">Filip Bukovina</a>
+        <ul class="nav__links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle light/dark mode"
+        >
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀︎</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☽</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero container" id="hero">
+        <p class="hero__eyebrow">Hello, I'm</p>
+        <h1 class="hero__name">Filip Bukovina</h1>
+        <p class="hero__tagline">
+          Developer &amp; Designer crafting thoughtful digital experiences.
+        </p>
+        <div class="hero__cta">
+          <a href="#projects" class="btn btn--primary">View my work</a>
+          <a href="#contact" class="btn btn--ghost">Get in touch</a>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="section about container" id="about">
+        <h2 class="section__title">About me</h2>
+        <div class="about__grid">
+          <div class="about__text">
+            <p>
+              I'm a full-stack developer with a passion for clean, accessible
+              interfaces and well-considered engineering. I believe great
+              software is as much about the people who use it as it is about the
+              code behind it.
+            </p>
+            <p>
+              When I'm not building things on a screen, you'll find me
+              somewhere in the mountains, reading, or hunting for the perfect
+              cup of coffee.
+            </p>
+          </div>
+          <ul class="about__skills">
+            <li>HTML · CSS · JavaScript</li>
+            <li>React · TypeScript · Node.js</li>
+            <li>Design systems &amp; accessibility</li>
+            <li>REST APIs &amp; databases</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section class="section projects" id="projects">
+        <div class="container">
+          <h2 class="section__title">Selected projects</h2>
+          <div class="projects__grid">
+            <article class="card">
+              <div class="card__meta">2024</div>
+              <h3 class="card__title">Project Alpha</h3>
+              <p class="card__desc">
+                A responsive web application that helps teams organise
+                asynchronous work with clarity and without friction.
+              </p>
+              <div class="card__tags">
+                <span class="tag">React</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Node.js</span>
+              </div>
+              <a href="#" class="card__link">View project →</a>
+            </article>
+
+            <article class="card">
+              <div class="card__meta">2024</div>
+              <h3 class="card__title">Design System</h3>
+              <p class="card__desc">
+                An accessible, token-based component library built to scale
+                across multiple products and teams.
+              </p>
+              <div class="card__tags">
+                <span class="tag">CSS</span>
+                <span class="tag">Storybook</span>
+                <span class="tag">a11y</span>
+              </div>
+              <a href="#" class="card__link">View project →</a>
+            </article>
+
+            <article class="card">
+              <div class="card__meta">2023</div>
+              <h3 class="card__title">Data Dashboard</h3>
+              <p class="card__desc">
+                Real-time analytics dashboard with interactive charts and
+                configurable widgets for business intelligence.
+              </p>
+              <div class="card__tags">
+                <span class="tag">Vue</span>
+                <span class="tag">D3.js</span>
+                <span class="tag">REST API</span>
+              </div>
+              <a href="#" class="card__link">View project →</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="section contact container" id="contact">
+        <h2 class="section__title">Get in touch</h2>
+        <p class="contact__intro">
+          I'm always open to interesting conversations and new opportunities.
+          Feel free to reach out.
+        </p>
+        <a href="mailto:hello@bukovinafilip.com" class="btn btn--primary"
+          >hello@bukovinafilip.com</a
+        >
+        <ul class="contact__links">
+          <li><a href="https://github.com/FBukovina" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/filipbukovina" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> Filip Bukovina. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
