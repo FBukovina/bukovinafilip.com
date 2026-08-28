@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   Single source of truth for the whole site. Everything else composes these.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Typefaces ------------------------------------------------------------- */
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Palette --------------------------------------------------------------- */
+  --color-ink: #0e0d0c; /* page ground, warm near-black */
+  --color-ink-raised: #16140f; /* hover ground for list rows */
+  --color-rule: #272420; /* hairline dividers */
+  --color-bone: #ede8e0; /* primary text, warm off-white */
+  --color-ash: #9c958b; /* secondary text */
+  --color-dust: #6b655c; /* metadata, decorative numerals */
+  --color-clay: #c77a4b; /* the single accent */
+
+  /* Type scale ------------------------------------------------------------
+     Fluid by default so mobile never inherits desktop proportions. */
+  --text-display: clamp(2.75rem, 15vw, 11rem);
+  --text-display--line-height: 0.86;
+  --text-display--letter-spacing: -0.035em;
+
+  --text-motto: clamp(1.75rem, 9vw, 5.5rem);
+  --text-motto--line-height: 0.95;
+  --text-motto--letter-spacing: -0.025em;
+
+  --text-heading: clamp(1.875rem, 4vw, 2.75rem);
+  --text-heading--line-height: 1.05;
+  --text-heading--letter-spacing: -0.02em;
+
+  --text-title: clamp(1.5rem, 3vw, 2.125rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.015em;
+
+  --text-lede: clamp(1.0625rem, 1.5vw, 1.3125rem);
+  --text-lede--line-height: 1.65;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.5;
+
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.16em;
+
+  /* Measure & layout ------------------------------------------------------ */
+  --container-page: 72rem; /* outer page frame */
+  --container-prose: 34rem; /* ~62 characters, comfortable reading */
+
+  /* Radii — deliberately almost flat ------------------------------------- */
+  --radius-hair: 2px;
+  --radius-soft: 6px;
+
+  /* Motion ---------------------------------------------------------------- */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quiet: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-clay) 32%, transparent);
+    color: var(--color-bone);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-clay);
+    outline-offset: 4px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+
+/* Optical sizing + a touch of the Fraunces WONK/SOFT character, reserved for
+   display typography. */
+@utility display-face {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "SOFT" 40,
+    "WONK" 1;
+  font-optical-sizing: auto;
+}
+
+/* Small caps eyebrow used to label sections. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+  color: var(--color-dust);
+}
+
+/* Page frame: consistent gutters at every breakpoint. */
+@utility page-frame {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+
+  @media (width >= 80rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Very low-amplitude film grain. Keeps the flat dark ground from reading as
+   plastic without introducing gradients. */
+@utility grain {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      opacity: 0.02;
+    }
+  }
+}
