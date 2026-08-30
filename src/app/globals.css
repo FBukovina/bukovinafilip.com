@@ -1,180 +1,590 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------------------
-   Design tokens
-   Single source of truth for the whole site. Everything else composes these.
---------------------------------------------------------------------------- */
-
 @theme {
-  /* Typefaces ------------------------------------------------------------- */
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-
-  /* Palette --------------------------------------------------------------- */
-  --color-ink: #0e0d0c; /* page ground, warm near-black */
-  --color-ink-raised: #16140f; /* hover ground for list rows */
-  --color-rule: #272420; /* hairline dividers */
-  --color-bone: #ede8e0; /* primary text, warm off-white */
-  --color-ash: #9c958b; /* secondary text */
-  --color-dust: #6b655c; /* metadata, decorative numerals */
-  --color-clay: #c77a4b; /* the single accent */
-
-  /* Type scale ------------------------------------------------------------
-     Fluid by default so mobile never inherits desktop proportions. */
-  --text-display: clamp(2.75rem, 15vw, 11rem);
-  --text-display--line-height: 0.86;
-  --text-display--letter-spacing: -0.035em;
-
-  --text-motto: clamp(1.75rem, 9vw, 5.5rem);
-  --text-motto--line-height: 0.95;
-  --text-motto--letter-spacing: -0.025em;
-
-  --text-heading: clamp(1.875rem, 4vw, 2.75rem);
-  --text-heading--line-height: 1.05;
-  --text-heading--letter-spacing: -0.02em;
-
-  --text-title: clamp(1.5rem, 3vw, 2.125rem);
-  --text-title--line-height: 1.1;
-  --text-title--letter-spacing: -0.015em;
-
-  --text-lede: clamp(1.0625rem, 1.5vw, 1.3125rem);
-  --text-lede--line-height: 1.65;
-
-  --text-body: 1rem;
-  --text-body--line-height: 1.7;
-
-  --text-meta: 0.8125rem;
-  --text-meta--line-height: 1.5;
-
-  --text-label: 0.6875rem;
-  --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.16em;
-
-  /* Measure & layout ------------------------------------------------------ */
-  --container-page: 72rem; /* outer page frame */
-  --container-prose: 34rem; /* ~62 characters, comfortable reading */
-
-  /* Radii — deliberately almost flat ------------------------------------- */
-  --radius-hair: 2px;
-  --radius-soft: 6px;
-
-  /* Motion ---------------------------------------------------------------- */
-  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-quiet: cubic-bezier(0.32, 0.72, 0, 1);
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --color-ink: #050505;
+  --color-ink-raised: #0c0c0c;
+  --color-rule: #242421;
+  --color-bone: #eeeae2;
+  --color-ash: #aaa69e;
+  --color-dust: #706e68;
+  --color-signal: #d8d2c5;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.45;
 }
 
-/* ---------------------------------------------------------------------------
-   Base
---------------------------------------------------------------------------- */
-
-@layer base {
-  :root {
-    color-scheme: dark;
-  }
-
-  html {
-    -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
-
-  body {
-    background-color: var(--color-ink);
-    color: var(--color-bone);
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: var(--text-body--line-height);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
-  }
-
-  ::selection {
-    background-color: color-mix(in oklab, var(--color-clay) 32%, transparent);
-    color: var(--color-bone);
-  }
-
-  :focus-visible {
-    outline: 1px solid var(--color-clay);
-    outline-offset: 4px;
-  }
+:root {
+  color-scheme: dark;
+  --page-pad: clamp(1.25rem, 3.4vw, 3.25rem);
+  --page-max: 100rem;
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---------------------------------------------------------------------------
-   Utilities
---------------------------------------------------------------------------- */
-
-/* Optical sizing + a touch of the Fraunces WONK/SOFT character, reserved for
-   display typography. */
-@utility display-face {
-  font-family: var(--font-display);
-  font-variation-settings:
-    "SOFT" 40,
-    "WONK" 1;
-  font-optical-sizing: auto;
+* {
+  box-sizing: border-box;
 }
 
-/* Small caps eyebrow used to label sections. */
-@utility eyebrow {
+html {
+  background: var(--color-ink);
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+html[data-intro="pending"],
+html[data-intro="play"] {
+  overflow: hidden;
+}
+
+body {
+  min-width: 20rem;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--color-ink);
+  color: var(--color-bone);
   font-family: var(--font-sans);
-  font-size: var(--text-label);
-  line-height: var(--text-label--line-height);
-  letter-spacing: var(--text-label--letter-spacing);
-  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+::selection {
+  background: #d8d2c5;
+  color: #070707;
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-bone);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  translate: 0 -200%;
+  padding: 0.7rem 0.95rem;
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font: 500 0.75rem/1 var(--font-mono);
+  transition: translate 160ms ease;
+}
+
+.skip-link:focus {
+  translate: 0;
+}
+
+.chapter-index {
   color: var(--color-dust);
+  font: 500 0.64rem/1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-/* Page frame: consistent gutters at every breakpoint. */
-@utility page-frame {
+/* Boot intro ------------------------------------------------------------- */
+
+.boot-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #030303;
+  animation: boot-intro-away 550ms var(--ease-cinematic) 1450ms forwards;
+}
+
+html[data-intro="skip"] .boot-intro,
+html[data-intro="done"] .boot-intro {
+  display: none;
+}
+
+.boot-intro__texture,
+.boot-intro__texture img {
+  position: absolute !important;
+  inset: 0;
   width: 100%;
-  max-width: var(--container-page);
-  margin-inline: auto;
-  padding-inline: 1.5rem;
+  height: 100%;
+}
 
-  @media (width >= 48rem) {
-    padding-inline: 2.5rem;
-  }
+.boot-intro__texture img {
+  object-fit: cover;
+}
 
-  @media (width >= 80rem) {
-    padding-inline: 3rem;
+.boot-intro__motto {
+  position: relative;
+  z-index: 1;
+  color: #e8ded0;
+  font-size: clamp(0.76rem, 1.2vw, 1.06rem);
+  font-weight: 400;
+  letter-spacing: 0.23em;
+  opacity: 0;
+  transform: translateY(0.25rem);
+  animation: boot-copy-in 350ms ease-out forwards;
+}
+
+@keyframes boot-copy-in {
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
   }
 }
 
-/* Very low-amplitude film grain. Keeps the flat dark ground from reading as
-   plastic without introducing gradients. */
-@utility grain {
-  position: relative;
+@keyframes boot-intro-away {
+  to {
+    opacity: 0;
+    transform: scale(1.018);
+    visibility: hidden;
+  }
+}
 
-  &::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    pointer-events: none;
-    opacity: 0.028;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Header ---------------------------------------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    backdrop-filter 220ms ease;
+}
+
+.site-header--lifted {
+  border-color: rgb(255 255 255 / 8%);
+  background: rgb(5 5 5 / 82%);
+  backdrop-filter: blur(18px);
+}
+
+.site-header__inner {
+  display: flex;
+  width: min(100%, var(--page-max));
+  min-height: 6.8rem;
+  margin-inline: auto;
+  padding: 1.8rem var(--page-pad);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.site-header__identity {
+  min-width: 0;
+}
+
+.site-header__name {
+  display: inline-block;
+  font-size: clamp(0.92rem, 1.45vw, 1.16rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+.site-header__identity p {
+  margin-top: 0.95rem;
+  color: #797771;
+  font: 400 0.68rem/1.4 var(--font-sans);
+}
+
+.site-header nav ul {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.4rem, 3.6vw, 3.3rem);
+}
+
+.site-header nav a {
+  display: block;
+  padding-block: 0.25rem;
+  color: #cfcbc3;
+  font-size: clamp(0.72rem, 1.2vw, 0.92rem);
+  transition: color 180ms ease;
+}
+
+.site-header nav a:hover,
+.site-header nav a:focus-visible {
+  color: #ffffff;
+}
+
+/* Gradey ---------------------------------------------------------------- */
+
+.gradey-chapter {
+  position: relative;
+  isolation: isolate;
+  min-height: max(46rem, 100svh);
+  overflow: hidden;
+  background: #050505;
+}
+
+.gradey-chapter__word {
+  position: absolute;
+  z-index: -1;
+  top: clamp(8.6rem, 13vh, 9.8rem);
+  left: var(--page-pad);
+  color: #191919;
+  font-size: clamp(8rem, 22.5vw, 22rem);
+  font-weight: 680;
+  line-height: 0.72;
+  letter-spacing: -0.09em;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.gradey-chapter__device {
+  position: absolute;
+  z-index: 2;
+  top: 54%;
+  left: 51%;
+  width: min(39vw, 34rem);
+  transform: translate(-50%, -50%);
+  filter:
+    drop-shadow(-3.5rem 2.5rem 5rem rgb(8 83 59 / 18%))
+    drop-shadow(0 2.2rem 4.5rem rgb(0 0 0 / 76%));
+}
+
+.gradey-chapter__caption {
+  position: absolute;
+  z-index: 3;
+  bottom: clamp(2.5rem, 7vh, 5.5rem);
+  left: var(--page-pad);
+  width: min(24rem, 30vw);
+}
+
+.gradey-chapter__caption h2 {
+  margin-top: 0.8rem;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 570;
+  letter-spacing: -0.04em;
+}
+
+.gradey-chapter__caption > p:not(.chapter-index) {
+  margin-top: 0.45rem;
+  color: #cbc6bd;
+  font-size: clamp(0.84rem, 1.3vw, 1rem);
+}
+
+.gradey-chapter__caption > span {
+  display: block;
+  max-width: 19rem;
+  margin-top: 0.8rem;
+  color: #77746e;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.gradey-chapter__next {
+  position: absolute;
+  z-index: 3;
+  right: var(--page-pad);
+  bottom: clamp(2.5rem, 7vh, 5.5rem);
+  display: grid;
+  width: min(17rem, 25vw);
+  transition: transform 250ms var(--ease-cinematic);
+}
+
+.gradey-chapter__next:hover,
+.gradey-chapter__next:focus-visible {
+  transform: translateY(-0.25rem);
+}
+
+.gradey-chapter__next strong {
+  margin-top: 0.5rem;
+  color: #dfdbd2;
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-weight: 620;
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+}
+
+.gradey-chapter__next > span:last-child {
+  max-width: 14rem;
+  margin-top: 0.8rem;
+  color: #77746e;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+/* Countie --------------------------------------------------------------- */
+
+.countie-chapter {
+  min-height: 92svh;
+  display: grid;
+  align-items: center;
+  border-top: 1px solid #1b1b19;
+  background: #090909;
+  scroll-margin-top: 4rem;
+}
+
+.countie-chapter__inner {
+  width: min(100%, var(--page-max));
+  margin-inline: auto;
+  padding: 9rem var(--page-pad);
+}
+
+.countie-chapter h2 {
+  margin-top: 1.4rem;
+  color: #dedad1;
+  font-size: clamp(5.8rem, 19vw, 17rem);
+  font-weight: 650;
+  line-height: 0.72;
+  letter-spacing: -0.085em;
+}
+
+.countie-chapter__summary {
+  max-width: 52rem;
+  margin-top: clamp(3rem, 7vh, 5.5rem);
+  color: #d0cbc1;
+  font-size: clamp(1.7rem, 4vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+
+.countie-chapter__description {
+  max-width: 31rem;
+  margin-top: 1.5rem;
+  color: #7f7b74;
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  line-height: 1.55;
+}
+
+.countie-chapter__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 3.5rem;
+}
+
+.countie-chapter__facts li {
+  border: 1px solid #2a2926;
+  border-radius: 999px;
+  padding: 0.62rem 0.9rem;
+  color: #88847c;
+  font: 500 0.64rem/1 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/* About ----------------------------------------------------------------- */
+
+.about-section {
+  border-top: 1px solid #20201e;
+  background: #e8e3da;
+  color: #111110;
+  scroll-margin-top: 4rem;
+}
+
+.about-section__inner {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: clamp(2rem, 5vw, 6rem);
+  width: min(100%, var(--page-max));
+  margin-inline: auto;
+  padding: clamp(5rem, 10vw, 9rem) var(--page-pad);
+}
+
+.about-section .chapter-index {
+  color: #75716a;
+}
+
+.about-section__label h2 {
+  margin-top: 1rem;
+  font-size: clamp(2.3rem, 5vw, 5rem);
+  font-weight: 620;
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+}
+
+.about-section__copy {
+  display: grid;
+  gap: 1.3rem;
+  font-size: clamp(1rem, 1.65vw, 1.34rem);
+  line-height: 1.48;
+  letter-spacing: -0.025em;
+}
+
+.about-section__roles {
+  color: #6f6b65;
+  font: 500 0.67rem/1.8 var(--font-mono);
+}
+
+/* Footer ---------------------------------------------------------------- */
+
+.site-footer {
+  background: #050505;
+  scroll-margin-top: 4rem;
+}
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  width: min(100%, var(--page-max));
+  margin-inline: auto;
+  padding: clamp(5rem, 9vw, 8rem) var(--page-pad) 2rem;
+}
+
+.site-footer__heading h2 {
+  max-width: 48rem;
+  margin-top: 1rem;
+  color: #dcd7ce;
+  font-size: clamp(2.5rem, 6vw, 6.5rem);
+  font-weight: 600;
+  line-height: 0.94;
+  letter-spacing: -0.065em;
+}
+
+.site-footer__links ul {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.site-footer__links a,
+.site-footer__links span[data-placeholder="true"] {
+  font-size: 0.75rem;
+}
+
+.site-footer__meta {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #20201e;
+  color: #67645e;
+  font: 400 0.64rem/1.4 var(--font-mono);
+}
+
+@media (max-width: 767px) {
+  .site-header__inner {
+    min-height: 4.8rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1rem;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    &::after {
-      opacity: 0.02;
-    }
+  .site-header__identity p {
+    display: none;
+  }
+
+  .site-header nav ul {
+    gap: 1rem;
+  }
+
+  .gradey-chapter {
+    min-height: max(43rem, 100svh);
+  }
+
+  .gradey-chapter__word {
+    top: 7.2rem;
+    left: 0.5rem;
+    font-size: clamp(6.7rem, 35vw, 10rem);
+  }
+
+  .gradey-chapter__device {
+    top: 48.5%;
+    left: 51%;
+    width: min(88vw, 26rem);
+  }
+
+  .gradey-chapter__caption {
+    bottom: 1.75rem;
+    width: 52vw;
+  }
+
+  .gradey-chapter__caption > span {
+    display: none;
+  }
+
+  .gradey-chapter__next {
+    right: var(--page-pad);
+    bottom: 1.75rem;
+    width: 34vw;
+    text-align: right;
+  }
+
+  .gradey-chapter__next strong {
+    font-size: clamp(1.8rem, 9vw, 2.8rem);
+  }
+
+  .gradey-chapter__next > span:last-child {
+    display: none;
+  }
+
+  .countie-chapter {
+    min-height: 82svh;
+  }
+
+  .countie-chapter__inner {
+    padding-block: 7rem;
+  }
+
+  .countie-chapter h2 {
+    font-size: clamp(5.2rem, 28vw, 8rem);
+  }
+
+  .about-section__inner,
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .about-section__copy {
+    max-width: 37rem;
+  }
+
+  .about-section__roles {
+    border-top: 1px solid #cbc5bb;
+    padding-top: 1.25rem;
+  }
+
+  .site-footer__meta {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-header__name {
+    font-size: 0.82rem;
+  }
+
+  .site-header nav a {
+    font-size: 0.64rem;
+  }
+
+  .site-header nav ul {
+    gap: 0.75rem;
+  }
+
+  .boot-intro__motto {
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

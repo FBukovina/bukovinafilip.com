@@ -16,10 +16,9 @@ export type SocialLink = {
 
 export const site = {
   name: "Filip Bukovina",
-  /** Hero setting — lowercase is intentional and part of the identity. */
-  displayName: "filip bukovina.",
+  displayName: "Filip Bukovina",
   motto: "still becoming.",
-  wordmark: "fb.",
+  wordmark: "Filip Bukovina",
   domain: "bukovinafilip.com",
   url: "https://bukovinafilip.com",
   /** Facts only. Rendered as a single quiet line beneath the hero. */
@@ -37,15 +36,13 @@ export const about = [
 ] as const;
 
 /**
- * `primary` items stay visible on phones; the rest appear from md up. The nav
- * is trimmed rather than hidden behind a menu — there is not enough of it to
- * justify one.
+ * The portfolio is short enough that every destination remains visible at
+ * every viewport size.
  */
 export const nav = [
-  { label: "about", href: "#about", primary: false },
-  { label: "work", href: "#work", primary: true },
-  { label: "now", href: "#now", primary: true },
-  { label: "contact", href: "#contact", primary: true },
+  { label: "work", href: "#work" },
+  { label: "about", href: "#about" },
+  { label: "contact", href: "#contact" },
 ] as const;
 
 export const socials: SocialLink[] = [

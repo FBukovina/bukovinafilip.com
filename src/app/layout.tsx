@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 
+import { BootIntro } from "@/components/boot-intro";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/content/site";
-import { fraunces, inter } from "@/lib/fonts";
+import { ibmPlexMono, inter } from "@/lib/fonts";
 
 import "./globals.css";
 
@@ -34,25 +35,41 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: "dark",
-  themeColor: "#0e0d0c",
+  themeColor: "#090909",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // The font variables must sit on <html>: the :root theme tokens in
-  // globals.css reference them, and a var() on :root cannot resolve a
-  // custom property that is only declared further down the tree.
+  // Font variables must sit on <html> so :root theme tokens can resolve them.
   return (
-    <html lang={site.locale} className={`${fraunces.variable} ${inter.variable}`}>
-      <body className="grain antialiased">
+    <html
+      lang={site.locale}
+      className={`${inter.variable} ${ibmPlexMono.variable}`}
+      data-intro="pending"
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          id="intro-prepaint"
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;var s=window.sessionStorage.getItem('bukovinafilip:intro-seen:v1')==='1';document.documentElement.dataset.intro=r||s?'skip':'play'}catch(e){document.documentElement.dataset.intro='play'}",
+          }}
+        />
+      </head>
+      <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-ink-raised focus:px-4 focus:py-2 focus:text-meta focus:text-bone"
+          className="skip-link"
         >
           Skip to content
         </a>
 
+        <BootIntro />
         <SiteHeader />
-        <main id="main">{children}</main>
+        <main id="main">
+          <h1 className="sr-only">{site.name} — iOS developer and selected work</h1>
+          {children}
+        </main>
         <SiteFooter />
       </body>
     </html>

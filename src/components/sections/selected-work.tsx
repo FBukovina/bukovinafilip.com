@@ -1,18 +1,12 @@
-import { ProjectRow } from "@/components/project-row";
-import { Reveal } from "@/components/reveal";
-import { Section } from "@/components/section";
+import { ProjectChapter } from "@/components/project-chapter";
 import { projects } from "@/content/projects";
 
 export function SelectedWork() {
   return (
-    <Section id="work" label="selected work">
-      <Reveal>
-        <ol>
-          {projects.map((project, index) => (
-            <ProjectRow key={project.slug} project={project} index={index} />
-          ))}
-        </ol>
-      </Reveal>
-    </Section>
+    <section id="work" aria-label="Selected work">
+      {projects.map((project, index) => (
+        <ProjectChapter key={project.slug} project={project} index={index} />
+      ))}
+    </section>
   );
 }

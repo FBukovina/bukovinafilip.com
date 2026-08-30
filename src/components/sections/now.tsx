@@ -5,15 +5,12 @@ import { formatDate } from "@/lib/format";
 
 export function Now() {
   return (
-    <Section id="now" label="now" aside={`Updated ${formatDate(now.updated)}`}>
+    <Section id="now" label="now" aside={formatDate(now.updated)}>
       <Reveal>
-        <ul className="max-w-prose space-y-4">
+        <ul className="space-y-2">
           {now.items.map((item) => (
-            <li key={item} className="flex gap-4 text-lede text-bone">
-              <span aria-hidden="true" className="text-dust">
-                &mdash;
-              </span>
-              <span>{item}</span>
+            <li key={item} className="text-bone">
+              {item}
             </li>
           ))}
         </ul>

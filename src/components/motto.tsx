@@ -1,17 +1,13 @@
 import { site } from "@/content/site";
 
-/**
- * "still becoming." — set in Fraunces italic with the full stop in the accent
- * colour. This is the only place the accent is used at scale, which is what
- * keeps it meaningful everywhere else.
- */
+/** Small mono caption. The accent lives only in the full stop. */
 export function Motto({ className }: { className?: string }) {
   const stem = site.motto.replace(/\.$/, "");
 
   return (
-    <span className={["display-face italic", className ?? ""].filter(Boolean).join(" ")}>
+    <span className={["font-mono text-meta text-ash", className ?? ""].filter(Boolean).join(" ")}>
       {stem}
-      <span className="text-clay not-italic">.</span>
+      <span className="text-signal">.</span>
     </span>
   );
 }

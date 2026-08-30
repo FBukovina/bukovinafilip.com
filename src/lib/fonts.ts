@@ -1,20 +1,14 @@
-import { Fraunces, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 
-/**
- * Fraunces carries the identity: hero, headings, project titles, motto.
- * Italic is loaded because the motto is set in it.
- */
-export const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  style: ["normal", "italic"],
-  axes: ["SOFT", "WONK", "opsz"],
-});
-
-/** Inter handles everything that has to be read rather than felt. */
 export const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
   display: "swap",
+});
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: ["400", "500"],
 });
